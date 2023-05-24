@@ -1,0 +1,91 @@
+JAVA FILE 
+
+CAL. OF AREA OF CIRCLE
+
+
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class AreaClass extends UnicastRemoteObject implements Remote, AreaInterface{
+
+	protected AreaClass() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public double area (double radius) throws RemoteException{
+		return 3.14*radius*radius;
+	}
+	
+	
+
+}
+
+
+
+
+//CLIENT CLASS
+
+import java.rmi.*;
+import java.rmi.registry.*;
+
+import java.util.Scanner;
+
+
+public class AreaClient {
+
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter radius : ");
+		double r = sc.nextDouble();
+		
+		AreaInterface obj1 = (AreaInterface)Naming.lookup("rmi://localhost:2000/ABC");
+		
+		System.out.println("Area is : " + obj1.area(r));
+
+	}
+
+}
+
+
+
+
+
+INTERFACE FILE 
+
+
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+
+public interface AreaInterface extends Remote{
+	
+	public double area(double radius) throws RemoteException;
+}
+
+
+
+
+
+SERVER FILE 
+
+
+import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
+
+public class AreaServer {
+
+	public static void main(String[] args) throws Exception{
+		
+		Registry reg = LocateRegistry.createRegistry(2000);
+		AreaInterface obj = new AreaClass();
+		reg.bind("ABC", obj);
+
+	}
+
+}
