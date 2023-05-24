@@ -1,0 +1,111 @@
+MAIN_JAVA_FILE
+
+
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class loginServlet
+ */
+@WebServlet("/loginServlet")
+public class loginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public loginServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				String username= "Sahil";
+				String password= "QWERTY";
+				
+				String user=request.getParameter("user");
+						String pass=request.getParameter("password");
+				
+				if(username.equals(user) && password.equals(pass)) {
+					response.sendRedirect("SUCESSFULL.html");
+					
+				}
+				else {
+					response.sendRedirect("FAIL.html");
+				}
+			}
+			
+	
+
+	
+
+}
+
+
+
+//HTML FILE
+
+//1.LOGIN HTML
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>LOGIN</title>
+</head>
+<body>
+<pre>
+<form name="login-form" method ="get" action ="loginServlet">
+
+Username : <input name="user" type = "text">
+<br>
+password: <input name="password" type = "text">
+
+<input name="submit" type = "submit">
+
+</form>
+
+</pre>
+</body>
+</html> 
+
+
+
+// 2.SUCWESSFULL HTML
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>LOGIN PAGE </title>
+</head>
+<body>
+<H1>
+LOGIN SUCESSFULL</H1>
+</body>
+</html>
+
+
+//3. FAIL HTML
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>LOGIN PAGE </title>
+</head>
+<body>
+<h1>LOGIN FAIL</h1>
+</body>
+</html>
