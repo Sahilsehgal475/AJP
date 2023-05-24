@@ -204,3 +204,193 @@ class Derived{
 		marks = scan.nextInt();
 	}
 }
+
+
+
+
+ALTERNATE METHOD :
+
+
+package DATA_BASE;
+import java.sql.*;
+import java.util.Scanner;
+
+public class GPT_DATA {
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/pop";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "Sahil@123";
+
+    private Connection connection;
+    private Scanner scanner;
+
+    public GPT_DATA() {
+        scanner = new Scanner(System.in);
+    }
+
+    public static void main(String[] args) {
+        GPT_DATA dataHandling = new GPT_DATA();
+        dataHandling.run();
+    }
+
+    public void run() {
+        try {
+            establishConnection();
+            int choice;
+            do {
+                displayMenu();
+                choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+                        createTable();
+                        break;
+                    case 2:
+                        insertData();
+                        break;
+                    case 3:
+                        fetchData();
+                        break;
+                    case 4:
+                        search();
+                        break;
+                    case 5:
+                        update();
+                        break;
+                    case 6:
+                        delete();
+                        break;
+                    default:
+                        System.out.println("Invalid choice.");
+                        break;
+                }
+                System.out.println("Enter 0 to exit or any other number to continue.");
+                choice = scanner.nextInt();
+            } while (choice != 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+    }
+
+    private void establishConnection() throws SQLException {
+        connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        System.out.println("Connection established successfully.");
+    }
+
+    private void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Connection closed successfully.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void displayMenu() {
+        System.out.println("Which query do you want to execute?");
+        System.out.println("1. Create Table");
+        System.out.println("2. Insert Data");
+        System.out.println("3. Fetch Data");
+        System.out.println("4. Search");
+        System.out.println("5. Update");
+        System.out.println("6. Delete");
+        System.out.print("Enter your choice: ");
+    }
+
+    private void createTable() throws SQLException {
+        String query = "CREATE TABLE IF NOT EXISTS info (roll_no INT, name VARCHAR(255), sub VARCHAR(255), " +
+                "marks INT, PRIMARY KEY (roll_no))";
+        try (Statement statement = connection.createStatement()) {
+            int rowsAffected = statement.executeUpdate(query);
+            System.out.println("Table created successfully.");
+            System.out.println("Rows affected: " + rowsAffected);
+        }
+    }
+
+    private void insertData() throws SQLException {
+        System.out.println("Enter the data:");
+        System.out.print("Enter roll no: ");
+        int rollNo = scanner.nextInt();
+        System.out.print("Enter name: ");
+        String name = scanner.next();
+        System.out.print("Enter subject: ");
+        String subject = scanner.next();
+        System.out.print("Enter marks: ");
+        int marks = scanner.nextInt();
+
+        String query = "INSERT INTO info VALUES (?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, rollNo);
+            statement.setString(2, name);
+            statement.setString(3, subject);
+            statement.setInt(4, marks);
+
+            int rowsAffected = statement.executeUpdate();
+            System.out.println("Data inserted successfully.");
+            System.out.println("Rows affected: " + rowsAffected);
+        }
+    }
+
+    private void fetchData() throws SQLException {
+        String query = "SELECT * FROM info";
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            System.out.println("Roll no\tName\tSubject\tMarks");
+            while (resultSet.next()) {
+                int rollNo = resultSet.getInt("roll_no");
+                String name = resultSet.getString("name");
+                String subject = resultSet.getString("sub");
+                int marks = resultSet.getInt("marks");
+                System.out.println(rollNo + "\t" + name + "\t" + subject + "\t" + marks);
+            }
+        }
+    }
+
+    private void search() throws SQLException {
+        System.out.print("Enter roll no to search: ");
+        int rollNo = scanner.nextInt();
+        String query = "SELECT * FROM info WHERE roll_no = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, rollNo);
+            ResultSet resultSet = statement.executeQuery();
+            System.out.println("Roll no\tName\tSubject\tMarks");
+            while (resultSet.next()) {
+                int fetchedRollNo = resultSet.getInt("roll_no");
+                String name = resultSet.getString("name");
+                String subject = resultSet.getString("sub");
+                int marks = resultSet.getInt("marks");
+                System.out.println(fetchedRollNo + "\t" + name + "\t" + subject + "\t" + marks);
+            }
+        }
+    }
+
+    private void delete() throws SQLException {
+        System.out.print("Enter roll no to delete: ");
+        int rollNo = scanner.nextInt();
+        String query = "DELETE FROM info WHERE roll_no = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, rollNo);
+            int rowsAffected = statement.executeUpdate();
+            System.out.println("Data deleted successfully.");
+            System.out.println("Rows affected: " + rowsAffected);
+        }
+    }
+
+    private void update() throws SQLException {
+        System.out.print("Enter roll no to update: ");
+        int rollNo = scanner.nextInt();
+        System.out.print("Enter new marks: ");
+        int newMarks = scanner.nextInt();
+        String query = "UPDATE info SET marks = ? WHERE roll_no = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, newMarks);
+            statement.setInt(2, rollNo);
+            int rowsAffected = statement.executeUpdate();
+            System.out.println("Data updated successfully.");
+            System.out.println("Rows affected: " + rowsAffected);
+        }
+    }
+}
+
