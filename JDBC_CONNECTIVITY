@@ -1,0 +1,64 @@
+//JDBC CONNECTIVITY
+
+package DATA_BASE_CONNECTIVITY;
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+public class Database {
+
+	public static void main(String[] args) throws SQLException {
+		// TODO Auto-generated method stub
+		String url= "jdbc:mysql://localhost:3306/practise_ajp";
+		String username= "root";
+		String password= "Sahil@123";
+		String query="Select * from info";
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con=DriverManager.getConnection(url,username,password);
+		System.out.println("Sucessfully connected with database");
+		Statement st= con.createStatement();
+		ResultSet rs= st.executeQuery(query);
+		while(rs.next()) {
+			System.out.println(rs.getInt(1)+"\t"+ rs.getString(2));
+		}
+		con.close();
+		st.close();
+		
+
+	}
+
+}
+
+
+
+// SHORT WAY
+
+
+package DATA_BASE;
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+public class DATA {
+
+	public static void main(String[] args) throws SQLException {
+		// TODO Auto-generated method stub
+		String url= "jdbc:mysql://localhost:3306/practise_ajp";
+		String username= "root";
+		String password= "root";
+  Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/practise_AJP", "root" ,"Sahil@123");
+      Statement st=con.createStatement();
+      String s="insert into info values(7, 'abcuud'),(8,'xyzioz');";
+	st.execute(s);
+	con.close();
+	System.out.println("Connection established with database");
+	System.out.println("Query executed sucessfully");
+	}
+
+
+}
+
+
+
