@@ -1,0 +1,69 @@
+//MOUSE_LISTENER
+
+package Exp_2;
+import java.awt.*;
+import java.awt.event.*;
+
+public class Mouse_Listener extends WindowAdapter implements MouseListener{
+
+	Frame F;
+	Label l;
+	Font f;
+
+	Mouse_Listener(){
+		F = new Frame();
+		F.setSize(500,400);
+		F.setLayout(null);
+		F.setVisible(true);
+		F.setTitle("Mouse Events Handling");
+		init();
+		addComponents();
+	}
+	
+	void init() {
+		l = new Label("Mouse Event");
+		l.setBounds(150, 150, 150, 50);
+		f = new Font("San Serif",Font.BOLD,18);
+		l.setForeground(Color.orange);
+	}
+	
+	void addComponents() {
+		F.add(l);
+		l.setFont(f);
+		F.addWindowListener(this);
+		F.addMouseListener(this);
+	}
+	
+	public void mouseEntered(MouseEvent e) {
+		l.setText("Mouse Entered");
+		F.setBackground(Color.green);
+	}
+	
+	public void mouseExited(MouseEvent e) {
+		l.setText("Mouse Exited");
+		F.setBackground(Color.cyan);
+	}
+	
+	public void mouseClicked(MouseEvent e) {
+		l.setText("Mouse Cicked");
+		F.setBackground(Color.darkGray);
+	}
+	
+	public void mousePressed(MouseEvent e) {
+		l.setText("Mouse Pressed");
+		F.setBackground(Color.MAGENTA);
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		l.setText("Mouse released");
+		F.setBackground(Color.PINK);
+	}
+	
+	public void windowClosing(WindowEvent e) {
+		F.dispose();	
+	}
+	
+	public static void main(String arg[]) {
+		new Mouse_Listener();
+	}
+}
