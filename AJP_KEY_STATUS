@@ -1,0 +1,80 @@
+KEY_STATUS
+
+
+package AJP;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+
+public class Key_Listener extends WindowAdapter implements KeyListener{
+	Frame F;
+	Label L;
+	TextArea A;
+	Font f;
+	
+	Key_Listener(){
+		F= new Frame();
+		F.setLayout(null);
+		F.setSize(500,500);
+		F.setTitle("Key Listener Event");
+		F.setVisible(true);
+		init();
+		addComponent();
+		
+		
+	}
+
+
+	private void addComponent() {
+		// TODO Auto-generated method stub
+		L.setBounds(200, 40, 100, 50);
+		F.add(L);
+		A.setBounds(50, 100, 400, 300);
+		F.add(A);
+		L.setFont(f);
+		F.addWindowListener(this);
+		A.addKeyListener(this);
+	}
+
+
+	private void init() {
+		// TODO Auto-generated method stub
+		L=new Label("Key Status");
+	    A= new TextArea();
+	    f=new Font( "Times new Roman", Font.BOLD,10);
+	}
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+              new Key_Listener();
+	}
+	public void windowClosing(WindowEvent e) {
+		F.dispose();
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		L.setText("Key Typed");
+	}
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		L.setText("Key Pressed");
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		L.setText("Key Released");
+	}
+
+}
